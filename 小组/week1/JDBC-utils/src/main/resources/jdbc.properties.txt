@@ -1,0 +1,5 @@
+url=jdbc:mysql:///studentroomsystem?allowPublicKeyRetrieval=true&amp;useSSL=false&amp;ServerPrepStmts=true
+user=root
+password=@521643220Yqy
+driver=com.mysql.cj.jdbc.Driver
+
