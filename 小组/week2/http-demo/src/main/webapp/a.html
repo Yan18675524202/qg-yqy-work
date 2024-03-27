@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Form</title>
+    <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id="app">
+    <el-form ref="requestForm" :model="requestData" label-width="100px">
+        <el-form-item label="请求方式">
+            <el-select v-model="requestData.method" placeholder="请选择">
+                <el-option label="GET" value="GET"></el-option>
+                <el-option label="POST" value="POST"></el-option>
+                <el-option label="PUT" value="PUT"></el-option>
+                <el-option label="DELETE" value="DELETE"></el-option>
+                <el-option label="HEAD" value="HEAD"></el-option>
+                <el-option label="CONNECT" value="CONNECT"></el-option>
+                <el-option label="OPTIONS" value="OPTIONS"></el-option>
+                <el-option label="TRACE" value="TRACE"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="请求类型">
+            <el-select v-model="requestData.type" placeholder="请选择">
+                <el-option label="JSON" value="application/json"></el-option>
+                <el-option label="Form Data" value="application/x-www-form-urlencoded"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="请求参数">
+            <el-input v-model="requestData.data" placeholder="请输入请求参数"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="sendRequest">发送请求</el-button>
+        </el-form-item>
+    </el-form>
+</div>
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            requestData: {
+                method: 'GET',
+                type: 'application/json',
+                data: ''
+            }
+        },
+        methods: {
+            sendRequest() {
+                // 构造请求对象
+                const request = {
+                    method: this.requestData.method,
+                    headers: {
+                        'Content-Type': this.requestData.type
+                    },
+                    body: this.requestData.data
+                };
+
+                // 发送请求
+                axios({
+                    method: this.requestData.method,
+                    headers: {
+                        'Content-Type': this.requestData.type
+                    },
+                    url: "http://localhost:8080/test_http_war/ReceiveServlet",
+                    data: this.requestData.data
+                }).then(function (resp) {
+
+                })
+
+
+            }
+        }
+    });
+</script>
+</body>
+</html>
