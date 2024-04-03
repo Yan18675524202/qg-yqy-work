@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id="app">
+    <el-form ref="formData" :model="form" label-width="80px">
+        <el-form-item label="姓名" prop="name">
+            <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="性别" prop="gender">
+            <el-radio-group v-model="form.gender">
+                <el-radio label="男">男</el-radio>
+                <el-radio label="女">女</el-radio>
+            </el-radio-group>
+        </el-form-item>
+        <el-form-item label="年龄" prop="age">
+            <el-input v-model.number="form.age" ></el-input>
+        </el-form-item>
+        <el-form-item label="职业" prop="occupation">
+            <el-input v-model="form.occupation"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="submitForm">提交</el-button>
+        </el-form-item>
+    </el-form>
+
+
+
+    <p style="font-size: 24px;font-weight: 700;">姓名:{{tableData.name}}</p>
+    <p style="font-size: 24px;font-weight: 700;">性别:{{tableData.gender}}</p>
+    <p style="font-size: 24px;font-weight: 700;">年龄:{{tableData.age}}</p>
+    <p style="font-size: 24px;font-weight: 700;">职业:{{tableData.occupation}}</p>
+
+</div>
+
+
+
+
+</body>
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+
+
+<script>
+    new Vue({
+        el: '#app',
+        data:{
+            form: {
+                name: '',
+                gender: '',
+                age: '',
+                occupation: ''
+            },
+            tableData: {
+                name: '',
+                gender: '',
+                age: '',
+                occupation: ''
+            }, // 存放表格数据
+        }
+        ,
+
+        methods: {
+            submitForm() {
+            // 发送表单数据到后台
+                axios.post("http://localhost:8080/test_qgThreeSmall_war/ReceiveServlet", this.form)
+                    .then(response => {
+
+                        this.tableData =JSON.parse(response.data);;
+
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
+    });
+</script>
+
+</html>
