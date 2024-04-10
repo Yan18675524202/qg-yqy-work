@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id = "app">
+
+<template>
+    <div class="login-container">
+        <el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-width="80px">
+            <el-form-item label="Username" prop="username">
+                <el-input v-model="loginForm.username"></el-input>
+            </el-form-item>
+            <el-form-item label="Password" prop="password">
+                <el-input type="password" v-model="loginForm.password"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="login">Login</el-button>
+            </el-form-item>
+            <div v-if="loginError" class="error-message">
+                <p>Username or password is incorrect. Please try again.</p>
+            </div>
+        </el-form>
+    </div>
+</template>
+
+
+</div>
+</body>
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+
+<script>
+
+   new Vue({
+       el: "#app",
+       data:{
+               loginError: false,
+               loginForm: {
+                   username: '',
+                   password: ''
+               },
+               loginRules: {
+                   username: [
+                       {required: true, message: 'Please input username', trigger: 'blur'},
+                       {max: 8, message: 'Username length cannot exceed 8 characters', trigger: 'blur'}
+                   ],
+                   password: [
+                       {required: true, message: 'Please input password', trigger: 'blur'},
+                       {max: 10, message: 'Password length cannot exceed 10 characters', trigger: 'blur'},
+                       {
+                           pattern: /^[a-zA-Z0-9]+$/,
+                           message: 'Password can only contain letters and numbers',
+                           trigger: 'blur'
+                       }
+                   ]
+
+           }
+       },
+       methods: {
+           async login() {
+               try {
+                   axios({
+                       method:"post",
+                       url:"http://localhost:8080/test_qgFourSmall_war/LoginServlet",
+                       data:this.loginForm,
+                   }).then(function (resp) {
+
+                        if (resp.data==="Error"){
+                            this.loginError = true;
+                        }else {
+                            window.location.href="http://localhost:8080/test_qgFourSmall_war/success.html"
+                        }
+                   })
+
+                   console.log('Login successful:', response.data);
+
+               } catch (error) {
+                   console.error('Login failed:', error.response.data);
+
+               }
+           }
+       },
+   });
+</script>
+</html>
